@@ -13,11 +13,11 @@ using namespace std;
 
 struct lexema
 {
-    int type; // !переменная 1  || число-операнд 2 || !операция 3 || 4 скобка 
-    string  str;
+    int type; // !переменная 1  || число-операнд 2 || !операция 3 || 4 скобка
+    string str;
     lexema(int first, string second);
-    bool operator == (const lexema& zxc)const noexcept;
-    friend ostream& operator <<(ostream &os, const lexema& zxc);
+    bool operator==(const lexema &zxc) const noexcept;
+    friend ostream &operator<<(ostream &os, const lexema &zxc);
 };
 
 class for_check;
@@ -25,47 +25,38 @@ class for_check;
 class arithmetic
 {
     friend class for_check;
-    private:
+
+private:
     string inputstring;
-    vector <lexema> input;
-    vector <lexema> postfix;
+    vector<lexema> input;
+    vector<lexema> postfix;
     string postfix_string = "";
-    map <string, double> variables;
-    map <string, int> priority;
-    bool check()const ;
+    map<string, double> variables; //////double -> polinom
+    map<string, int> priority;
+    bool check() const;
     void parser();
-    void to_postfix()noexcept;
+    void to_postfix() noexcept;
     void getvalue();
-    double calculate()  noexcept;
+    double calculate() noexcept;
 
-    public:
-
-    arithmetic(string& tmp) noexcept;
-    double try_calculate();
+public:
+    arithmetic(string &tmp) noexcept;
+    // arithmetic() noexcept;
+    //  void new_polinom_for_calculate(string &tmp); // clear hear
+    double try_calculate(); /// double -> polinom
     ~arithmetic() = default;
 
-
-
-    string input_string_out()const noexcept;
-    string postfix_string_out()  noexcept;
+    string input_string_out() const noexcept;
+    string postfix_string_out() noexcept;
 };
 
 class for_check
 {
-    public:
-    bool check_parser( arithmetic& zxc, const vector <lexema> res);
-    bool check_check(arithmetic& zxc);
-    bool check_calculate(arithmetic& zxc, const double& res);
-    bool check_postfix(arithmetic& zxc, const string& res);
-
-
+public:
+    bool check_parser(arithmetic &zxc, const vector<lexema> res);
+    bool check_check(arithmetic &zxc);
+    bool check_calculate(arithmetic &zxc, const double &res);
+    bool check_postfix(arithmetic &zxc, const string &res);
 };
-
-
-
-
-
-
-
 
 #endif
