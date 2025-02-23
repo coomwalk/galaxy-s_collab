@@ -1,2 +1,7 @@
-# galaxy-s_collab
-skills + brave
+# Tables
+
+1.sliv 3 labs in 1
+2.magic
+3.ready lab
+_skills = 100 + brave = 100_
+![](https://ru.wikipedia.org/wiki/Файл:Гигачад.jpg)
