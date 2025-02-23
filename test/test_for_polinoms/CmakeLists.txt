@@ -1,0 +1,6 @@
+#set(target_test "test_for_arithmetic")
+#include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../gtest" "${CMAKE_CURRENT_SOURCE_DIR}/../../include" )
+#file(GLOB srcs "test_main.cpp" "test_super_stack.cpp" "test_arithmetic.cpp")
+
+#add_executable("${target_test}" ${srcs})
+#target_link_libraries(${target_test} "gtest_lib" "src_lib" )
