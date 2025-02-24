@@ -2,6 +2,8 @@
 *.d
 #custom
 /build
+/out
+/.vs
 .DS_Store
 # Compiled Object files
 *.slo
