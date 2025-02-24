@@ -31,5 +31,6 @@ public:
     bool operator<(const Monom& m) const;
 
     friend ostream& operator<<(ostream& ostr, const Monom& m);
+    //fjdjfhsjfskfjdlkdasjkldsajdljdsddkjdksd
 };
 #endif
