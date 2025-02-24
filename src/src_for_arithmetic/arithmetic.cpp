@@ -250,8 +250,8 @@ void arithmetic::getvalue()
 {
     for (auto &[first, second] : variables)
     {
-        cout << "Input value of " << first << ": ";
-        cin >> second; // polinom NOT STR!        ////////////////////////////////////////////////////////
+        cout << "Input value of " << first << ": "; /// из таблицы брать
+        cin >> second;                              // polinom NOT STR!        ////////////////////////////////////////////////////////
     }
 }
 
