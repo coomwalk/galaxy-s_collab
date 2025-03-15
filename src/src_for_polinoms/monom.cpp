@@ -1,93 +1,134 @@
-
 #include<iostream>
 #include<string>
 #include <cctype>
 #include "monom.h"
-using namespace std;
 
-Monom::Monom(double c, int px = 0, int py = 0, int pz = 0) : coeff(c), pow_x(px), pow_y(py), pow_z(pz) {}
+Monom::Monom() : coeff(0), pow_x(0), pow_y(0), pow_z(0) {}
 
-Monom::Monom(const string& s) : coeff(0), pow_x(0), pow_y(0), pow_z(0) {   // Конструктор по строке ("3x1y2z1")
-        size_t i = 0;
-        while (i < s.length() && isdigit(s[i]))
-        {
-            coeff = coeff * 10 + (s[i] - '0');
-            //coeff = coeff * 10 + s[i];
-            i++;
-        }
-        while (i < s.length()) {
-            char var = s[i++]; // Считываем переменную
-            int pow = 0;
-            if (i < s.length() && isdigit(s[i])) {
+Monom::Monom(const Monom& m) noexcept : coeff(m.coeff), pow_x(m.pow_x), pow_y(m.pow_y), pow_z(m.pow_z) {}
 
-                while (i < s.length() && isdigit(s[i])) {
-                    pow = pow * 10 + (s[i] - '0');
-                    //pow = pow * 10 + s[i];
-                    i++;
-                }
-            }
-            switch (var) {
-            case 'x':
-                pow_x = pow;
-                break;
-            case 'y':
-                pow_y = pow;
-                break;
-            case 'z':
-                pow_z = pow;
-                break;
-            }
-        }
-    }
+Monom::Monom(double c, int px, int py, int pz) noexcept : coeff(c), pow_x(px), pow_y(py), pow_z(pz) {}
 
-int Monom::getPowX()
+Monom::Monom(const string& s)
 {
-    return pow_x;
-}
-    int Monom::getPowY()
-    {
-        return pow_y;
-    }
-    int Monom::getPowZ()
-    {
-        return pow_z;
-    }
-    double Monom::getCoeff()
-    {
-        return coeff;
-    }
+    std::string::const_iterator it = s.begin();
+    std::string sub;
 
-    Monom Monom::operator+(const Monom& m) const
+    for (it; *it != 'x'; ++it)
     {
-        if (pow_x == m.pow_x && pow_y == m.pow_y && pow_z == m.pow_z) {
-            return Monom(coeff + m.coeff, pow_x, pow_y, pow_z);
-        }
+        sub.push_back(*it);
+    }
+    ++it;
+    
+    coeff = std::stod(sub);
+    sub.clear();
+
+    for (it; *it != 'y'; ++it)
+    {
+        sub.push_back(*it);
+    }
+    ++it;
+    pow_x = std::stoi(sub);
+    sub.clear();
+
+    for (it; *it != 'z'; ++it)
+    {
+        sub.push_back(*it);
+    }
+    ++it;
+    pow_y = std::stoi(sub);
+    sub.clear();
+
+    for (it; it != s.end(); ++it)
+    {
+        sub.push_back(*it);
+    }
+    pow_z = std::stoi(sub);
+}
+
+Monom& Monom::operator=(const Monom& m) noexcept
+{
+    if (*this == m)
+    {
         return *this;
     }
 
-    Monom Monom::operator*(const Monom& other) const
+    coeff = m.coeff;
+    pow_x = m.pow_x;
+    pow_y = m.pow_y;
+    pow_z = m.pow_z;
+
+    return *this;
+}
+
+Monom Monom::operator+(const Monom& m)
+{
+    if ((pow_x == m.pow_x) && (pow_y == m.pow_y) && (pow_z == m.pow_z))
     {
-        return Monom(coeff * other.coeff, pow_x + other.pow_x, pow_y + other.pow_y, pow_z + other.pow_z);
+        return Monom(coeff + m.coeff, pow_x, pow_y, pow_z);
+    }
+    else
+    {
+        throw std::invalid_argument("Cannot add monomials with different pows");
+    }
+}
+
+Monom Monom::operator-(const Monom& m)
+{
+    if ((pow_x == m.pow_x) && (pow_y == m.pow_y) && (pow_z == m.pow_z))
+    {
+        return Monom(coeff - m.coeff, pow_x, pow_y, pow_z);
+    }
+    else
+    {
+        throw std::invalid_argument("Cannot add monomials with different pows");
+    }
+}
+
+Monom Monom::operator*(const double& oth) const noexcept
+{
+    if (oth == 0 || coeff == 0.0)
+    {
+        return Monom();
+    }
+    return Monom(coeff * oth, pow_x, pow_y, pow_z);
+}
+
+Monom Monom::operator*(const Monom& m) const noexcept
+{
+    if (coeff == 0 || m.coeff == 0)
+    {
+        return Monom();
     }
 
-    bool Monom::operator==(const Monom& m) const
-    {
-        return (coeff == m.coeff && pow_x == m.pow_x && pow_y == m.pow_y && pow_z == m.pow_z);
-    }
+    return Monom(coeff * m.coeff, pow_x + m.pow_x, pow_y + m.pow_y, pow_z + m.pow_z);
+}
 
-    // Сравнение по сумме степеней, затем по коэффициентам
-    bool Monom::operator<(const Monom& m) const
-    {
-        if (pow_x + pow_y + pow_z != m.pow_x + m.pow_y + m.pow_z) {
-            return (pow_x + pow_y + pow_z) < (m.pow_x + m.pow_y + m.pow_z);
-        }
-        // Если степени одинаковые, сравниваем коэффициенты
-        return coeff < m.coeff;
-    }
+bool Monom::operator==(const Monom& m) const noexcept
+{
+    return (coeff == m.coeff) && (pow_x == m.pow_x) && (pow_y == m.pow_y) && (pow_z == m.pow_z);
+}
 
-    ostream& operator<<(ostream& ostr, const Monom& m)
-    {
-        ostr << "Коэффициент: " << m.coeff << endl;
-        ostr << "Степень X: " << m.pow_x << endl << "Степень Y: " << m.pow_y << endl << "Степень Z: " << m.pow_z << endl;
-        return ostr;
-    }
+bool Monom::operator!=(const Monom& m) const noexcept
+{
+    return !(*this == m);
+}
+
+ostream& operator<<(ostream& ostr, const Monom& m)
+{
+    ostr << m.coeff;
+    ostr << "x" << m.pow_x;
+    ostr << "y" << m.pow_y;
+    ostr << "z" << m.pow_z;
+    return ostr;
+}
+
+bool Monom::EqPow(const Monom& m) const noexcept
+{
+    return (pow_x == m.pow_x) && (pow_y == m.pow_y) && (pow_z == m.pow_z);
+}
+
+double Monom::GetCoeff() const
+{
+    return coeff;
+}

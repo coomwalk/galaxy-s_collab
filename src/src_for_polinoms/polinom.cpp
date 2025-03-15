@@ -1,168 +1,254 @@
-
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 #include <cctype>
 #include <sstream>
 #include "polinom.h"
 #include "monom.h"
 #include "list.h"
-using namespace std;
 
-
-
-
-Polynom::Polynom() {}
-
-Polynom::Polynom(const string& s) {  //3x1y2z1 + 2x2y2z1
-    size_t i = 0;
-    while (i < s.length()) {
-        size_t start = i;
-        while (i < s.length() && (isdigit(s[i]) || s[i] == 'x' || s[i] == 'y' || s[i] == 'z')) {
-            i++;
-        }
-        if (start < i) {
-            string monomStr = s.substr(start, i - start);
-            Monom monom(monomStr);
-            p.InsertToTail(monom);
-        }
-        if (i < s.length() && (s[i] == '+' || s[i] == ' ')) {
-            i++; // пропускаем знак +
-        }
-    }
-}
-
-void Polynom::printPol()
+Polynom::Polynom()
 {
-    p.Print();
-    cout << endl;
+    //polinoms.InsertToTail(Monom());
 }
 
-Polynom Polynom::operator+(Polynom& other) 
+Polynom::Polynom(const string& s) //-3.1x10y10z10 + 20.2x-10y-10z-10
 {
-    Polynom res = other;
-    Node<Monom>* currA = p.GetFirst();
-    Node<Monom>* prevA = nullptr;
-    Node<Monom>* currB = res.p.GetFirst();
-    Node<Monom>* prevB = nullptr;
+    std::string copy_s = s;
+    std::string tmp;
+    std::string::iterator it = copy_s.begin();
 
-    while (currA != nullptr && currB != nullptr) {
-        if (currA->data < currB->data) {
-            res.p.InsertCurr(prevB, currB, currA->data);
-            prevA = currA;
-            currA = currA->next;
-            if (prevB == nullptr) {
-                prevB = res.p.GetFirst();
-            }
-            else {
-                prevB = prevB->next;
-            }
+    while (it != copy_s.end())
+    {
+        if (*it != ' ' && *it != '+')
+        {
+            tmp.push_back(*it);
         }
-        else if (currB->data < currA->data) {
-            prevB = currB;
-            currB = currB->next;
+        else if(*it == '+')
+        {
+            polinoms.InsertToTail(Monom(tmp));
+            tmp.clear();
         }
-        else { // Степени совпадают, нужно сложить их
-            currB->data = currB->data + currA->data;
-            if (currB == nullptr) {
-                // Удалить currB
-                res.p.Delete(currB);
-                if (prevB == nullptr) {
-                    currB = res.p.GetFirst();
-                }
-                else {
-                    currB = prevB->next;
-                }
-            }
-            else {
-                prevB = currB;
-                currB = currB->next;
-            }
-            prevA = currA;
-            currA = currA->next;
-        }
+
+        ++it;
     }
 
-    // Добавляем оставшиеся мономы, если они есть
-    while (currA != nullptr) {
-        res.p.InsertCurr(prevB, currB, currA->data);
-        prevA = currA;
-        currA = currA->next;
-        if (prevB == nullptr) {
-            prevB = res.p.GetFirst();
-        }
-        else {
-            prevB = prevB->next;
-        }
+    if (it == copy_s.end())
+    {
+        polinoms.InsertToTail(Monom(tmp));
+        tmp.clear();
     }
-
-    return res;
 }
-//старое сложение полиномов( для неупорядоченного списка)
-/*Polynom operator+(Polynom& other) {  //  "3x1y2z1 + 2x2y2z1" + "3x1y2z1 + 2x2y2z3"
-    Polynom res;
-    Node<Monom>* currentA = p.getFirst();
-    Node<Monom>* currentB = other.p.getFirst();
-    // Добавляем все мономы из первого полинома в результат
-    while (currentA != nullptr) {
-        res.p.Insert(currentA->value);
-        currentA = currentA->next;
+
+Polynom::Polynom(Polynom& p)
+{
+    polinoms.Clean();
+    listIterator<Monom> start = p.polinoms.GetFirst();
+
+    while (start != p.polinoms.end())
+    {
+        polinoms.InsertToTail(*start);
+        ++start;
     }
-    while (currentB != nullptr) {
-        int flag = 0;
-        // Проверяем, сущ ли моном с такими же степенями
-        Node<Monom>* resCurrent = res.p.getFirst();
-        while (resCurrent != nullptr) {
-            if (resCurrent->value.getPowX() == currentB->value.getPowX() &&
-                resCurrent->value.getPowY() == currentB->value.getPowY() &&
-                resCurrent->value.getPowZ() == currentB->value.getPowZ()) {
-                // Если найден, суммируем коэффициенты
-                Monom newMonom = resCurrent->value + currentB->value;
-                if (newMonom.getCoeff() != 0) {
-                    resCurrent->value = newMonom; // Обновляем моном в результате
-                }
-                else {
-                    //если коэфф стал 0 то удалить этот моном
-                    //  ДОПИСАТЬ!!!!
-                }
-                flag = 1;
-                break;
-            }
-            resCurrent = resCurrent->next;
-        }
-        // Если моном не был объединен, доб его в результат
-        if (flag!=1) {
-            res.p.Insert(currentB->value);
-        }
-        currentB = currentB->next;
+}
+
+Polynom& Polynom::operator=(Polynom& p)
+{
+    if (this == &p)
+    {
+        return *this;
     }
-    return res;
-}*/
+
+    polinoms.Clean();
+    
+    listIterator<Monom> start = p.polinoms.GetFirst();
+
+    while (start != p.polinoms.end())
+    {
+        polinoms.InsertToTail(*start);
+        ++start;
+    }
+
+    return *this;
+}
+
 Polynom Polynom::operator*(Monom& m)
 {
     Polynom res;
-    Node<Monom>* currentA = p.GetFirst();
-    while (currentA != nullptr) {
-        Monom newMonom = currentA->data * m;
-        res.p.InsertToTail(newMonom);
-        currentA = currentA->next;
+    listIterator<Monom> start = polinoms.GetFirst();
+
+    for (start; start != polinoms.end(); ++start)
+    {
+        Monom tmp = *start * m;
+        res.polinoms.InsertToTail(tmp);
     }
+
     return res;
 }
 
-Polynom operator*(Monom& m, Polynom& oth) {
-    return oth * m; 
-}
-
-Polynom Polynom::operator*(Polynom& other)
+Polynom Polynom::operator*(double& oth)
 {
     Polynom res;
-    Node<Monom>* currentA = p.GetFirst();
-    while (currentA != nullptr)
+    listIterator<Monom> start = polinoms.GetFirst();
+
+    for (start; start != polinoms.end(); ++start)
     {
-        Polynom newPoly = currentA->data * other;
-        res = newPoly;
-        
-        currentA = currentA->next;
+        Monom tmp = *start * oth;
+        res.polinoms.InsertToTail(tmp);
     }
+
     return res;
+
+
+}
+
+Polynom Polynom::operator+(Polynom& p)
+{
+    Polynom res;
+
+    res.polinoms = polinoms.Merge(p.polinoms);
+    res.DelCoeffZero();
+    
+    listIterator<Monom> it = res.polinoms.GetFirst();
+    listIterator<Monom> next_it = it;
+
+    while (it != res.polinoms.end())
+    {
+        next_it = it;
+        ++next_it;
+
+        while (next_it != res.polinoms.end())
+        {
+            if ((*it).EqPow(*next_it))
+            {
+                *it = *it + *next_it;
+                listIterator<Monom> to_delete = next_it;
+                ++next_it;
+                res.polinoms.Delete(*to_delete);
+            }
+            else
+            {
+                ++next_it;
+            }
+        }
+        ++it;
+    }
+
+    return res;
+}
+
+Polynom Polynom::operator-(Polynom& p)
+{
+    Polynom res;
+    double c = -1.0;
+    p = p * c;
+    res = *this + p;
+
+    return res;
+}
+
+Polynom Polynom::operator*(Polynom& p)
+{
+    Polynom res;
+
+    listIterator<Monom> it1 = polinoms.GetFirst();
+    
+
+    for (it1; it1 != polinoms.end(); ++it1)
+    {
+        for (listIterator<Monom> it2 = p.polinoms.GetFirst(); it2 != p.polinoms.end(); ++it2)
+        {
+            Monom tmp = *it1 * *it2;
+            res.polinoms.InsertToTail(tmp);
+        }
+    }
+    res.DelCoeffZero();
+
+    listIterator<Monom> it = res.polinoms.GetFirst();
+    listIterator<Monom> next_it = it;
+
+    while (it != res.polinoms.end())
+    {
+        next_it = it;
+        ++next_it;
+
+        while (next_it != res.polinoms.end())
+        {
+            if ((*it).EqPow(*next_it))
+            {
+                *it = *it + *next_it;
+                listIterator<Monom> to_delete = next_it;
+                ++next_it;
+                res.polinoms.Delete(*to_delete);
+            }
+            else
+            {
+                ++next_it;
+            }
+        }
+        ++it;
+    }
+
+
+    return res;
+}
+
+ostream& operator<<(ostream& ostr, Polynom& p)
+{
+    listIterator<Monom> start = p.polinoms.GetFirst();
+    listIterator<Monom> end = p.polinoms.end();
+
+    for (start; start != end; ++start)
+    {
+        ostr << *start;
+        if (std::next(start) != end)
+        {
+            ostr << " + ";
+        }
+    }
+
+    return ostr;
+}
+
+istream& operator>>(istream& istr, Polynom& poli)
+{
+    poli.polinoms.Clean();
+
+    std::string input;
+
+    cout << "Enter <<end>> to exit" << endl;
+    cout << "Enter Polinom:" << endl;
+
+    while (true)
+    {
+        cout << "> ";
+        istr >> input;
+
+        if (input == "end")
+        {
+            break;
+        }
+
+        poli.polinoms.InsertToTail(Monom(input));
+    }
+    
+    return istr;
+}
+
+void Polynom::DelCoeffZero()
+{
+    listIterator<Monom> current = polinoms.GetFirst();
+
+    while (current != polinoms.end())
+    {
+        if ((*current).GetCoeff() == 0.0)
+        {
+            listIterator<Monom> del = current;
+            ++current;
+            polinoms.Delete(*del);
+        }
+        else
+        {
+            ++current;
+        }
+    }
 }

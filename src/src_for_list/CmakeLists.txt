@@ -1,0 +1,9 @@
+set(target_src "src_lib_for_list")
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include/include_for_list")
+
+file(GLOB hdrs
+    "list.h"
+)
+
+add_library(${target_src} INTERFACE)

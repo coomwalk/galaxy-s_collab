@@ -15,10 +15,6 @@ add_subdirectory(samples)
 add_subdirectory(test)
 add_subdirectory(src)
 
-
-
-
-
 message(STATUS "Sborochka_message")
 message(STATUS "=================")
 message(STATUS ${PROJECT_NAME})

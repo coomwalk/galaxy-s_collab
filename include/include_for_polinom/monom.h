@@ -1,6 +1,5 @@
-#pragma once
-#ifndef __Monom__
-#define __Monom__
+#ifndef __MONOM__
+#define __MONOM__
 
 #include<iostream>
 #include<string>
@@ -14,23 +13,24 @@ class Monom
     int pow_y;
     int pow_z;
 public:
-    Monom(double c, int px, int py, int pz);
+
+    Monom();
+    Monom(const Monom& m) noexcept;
+    Monom(double c, int px, int py, int pz) noexcept;
     Monom(const string& s);
 
-    int getPowX();
-    int getPowY();
-    int getPowZ();
-    double getCoeff();
+    Monom& operator=(const Monom& m) noexcept;
+    Monom operator+(const Monom& m);
+    Monom operator-(const Monom& m);
+    Monom operator*(const double& oth) const noexcept;
+    Monom operator*(const Monom& other) const noexcept;
+    
+    bool operator==(const Monom& m) const noexcept;
+    bool operator!=(const Monom& m) const noexcept;
 
-    Monom operator+(const Monom& m) const;
-
-    Monom operator*(const Monom& other) const;
-
-    bool operator==(const Monom& m) const;
-
-    bool operator<(const Monom& m) const;
+    bool EqPow(const Monom& m) const noexcept;
+    double GetCoeff() const;
 
     friend ostream& operator<<(ostream& ostr, const Monom& m);
-    //fjdjfhsjfskfjdlkdasjkldsajdljdsddkjdksd
 };
 #endif

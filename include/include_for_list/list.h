@@ -739,54 +739,11 @@ public:
 
 	}
 
-	void Print()
-	{
-		Node<DataType>* p = head;
-		while (p->next != nullptr) { //пока список не кончится
-			cout << p->data << " ";
-			p = p->next;
-		}
-		cout << p->data; //печать послед.
-	}
-
 	Node<DataType>* GetFirst()
 	{
 		return head;
 	}
 
-	void InsertCurr(Node<DataType>* prev, Node<DataType>* curr, DataType value)
-	{
-		Node<DataType>* p = new Node<DataType>(value, nullptr);
-
-		
-		if (head == nullptr) {
-			head = p;
-			return;
-		}
-
-		// Вставка в начало (перед head)
-		if (prev == nullptr) {
-			p->next = head;
-			head = p;
-			return;
-		}
-
-		// Вставка в конец (если curr == nullptr и prev->next == nullptr)
-		if (curr == nullptr) {
-			if (prev->next == nullptr) {
-				prev->next = p;
-			}
-			else {
-				delete p; // Освобождаем память, если вставка невозможна
-				throw std::invalid_argument("Invalid prev node for insertion at the end");
-			}
-			return;
-		}
-
-		// Вставка между prev и curr
-		prev->next = p;
-		p->next = curr;
-	}
 };
 
 #endif
