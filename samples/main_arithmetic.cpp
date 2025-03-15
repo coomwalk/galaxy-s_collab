@@ -1,4 +1,5 @@
-#include "arithmetic.h"
+
+/*#include "arithmetic.h"
 using namespace std;
 int main()
 {
@@ -12,3 +13,4 @@ int main()
   cout << endl << "RESULT: " << zibrail << endl;
   return 0;
 }
+*/

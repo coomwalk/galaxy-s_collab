@@ -1,6 +1,6 @@
 #include "arithmetic.h"
 #include <sstream>
-
+/* here!!!!!!!!!!!!!!!!
 lexema::lexema(int first, string second) : type(first), str(second)
 {
 }
@@ -56,9 +56,9 @@ void arithmetic::parser()
             lexema tmp(1, k);
             variables[k];
             input.push_back(tmp);
-        }
-        if (strchr("+-*/", inputstring[i]) != nullptr)
-        {
+        }*/ // here!!!!!!!!!!!!!!!!!!
+        //if (strchr("+-*/", inputstring[i]) != nullptr)
+        /*{
             string k(1, inputstring[i]);
             lexema tmp(3, k);
             input.push_back(tmp);
@@ -226,14 +226,14 @@ Polynom arithmetic::calculate() noexcept ////    double -> polinom and lower!!! 
                 st.push(left * right);
                 break;
             }
-            /*
-            case '/':
-            {
-                double right = st.pop(), left = st.pop();
-                st.push(static_cast<double>(left / right));
-                break;
-            }
-            */
+            
+            //case '/':
+           //{
+             //   double right = st.pop(), left = st.pop();
+               // st.push(static_cast<double>(left / right));
+                //break;
+            //}
+            
             default:
             {
                 cout << " it's fiasko" << endl;
@@ -306,3 +306,4 @@ bool for_check::check_postfix(arithmetic &zxc, const string &res)
     zxc.to_postfix();
     return (zxc.postfix_string == res);
 }
+*/

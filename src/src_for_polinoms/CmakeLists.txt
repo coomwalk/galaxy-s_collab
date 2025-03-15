@@ -1,7 +1,11 @@
-set(target_src "src_lib_polinom")
+set(target_src "lib_for_polinoms_and_monom")
+
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include/include_for_polinom")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include/include_for_list")
 
-file(GLOB src "monom.cpp" "polinom.cpp")
+file(GLOB src
+    "monom.cpp"
+    "polinom.cpp"
+)
 
 add_library(${target_src} STATIC ${src})

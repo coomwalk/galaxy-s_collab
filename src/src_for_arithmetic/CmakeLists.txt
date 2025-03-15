@@ -1,4 +1,4 @@
-set(target_src "src_lib_for_arithmetic")
+set(target_src "lib_for_arithmetic")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include/include_for_arithmetic")
 

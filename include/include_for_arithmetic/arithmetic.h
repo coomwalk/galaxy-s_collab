@@ -8,7 +8,7 @@
 #include <map>
 #include <cctype>
 #include "super_stack.h"
-#include "polinom.h"
+#include "../include_for_polinom/polinom.h"
 
 using namespace std;
 

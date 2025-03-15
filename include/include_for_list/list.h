@@ -739,46 +739,11 @@ public:
 
 	}
 
-
-
-	Node<DataType>* GetFirst()
+	Node<DataType>* GetFirst() const
 	{
 		return head;
 	}
 
-	void InsertCurr(Node<DataType>* prev, Node<DataType>* curr, DataType value)
-	{
-		Node<DataType>* p = new Node<DataType>(value, nullptr);
-
-		
-		if (head == nullptr) {
-			head = p;
-			return;
-		}
-
-		// ������� � ������ (����� head)
-		if (prev == nullptr) {
-			p->next = head;
-			head = p;
-			return;
-		}
-
-		// ������� � ����� (���� curr == nullptr � prev->next == nullptr)
-		if (curr == nullptr) {
-			if (prev->next == nullptr) {
-				prev->next = p;
-			}
-			else {
-				delete p; // ����������� ������, ���� ������� ����������
-				throw std::invalid_argument("Invalid prev node for insertion at the end");
-			}
-			return;
-		}
-
-		// ������� ����� prev � curr
-		prev->next = p;
-		p->next = curr;
-	}
 };
 
 #endif
