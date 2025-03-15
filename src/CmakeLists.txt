@@ -1,4 +1,3 @@
 add_subdirectory(src_for_arithmetic)
-add_subdirectory(src_for_list)
 add_subdirectory(src_for_polinoms)
 add_subdirectory(src_for_tables)

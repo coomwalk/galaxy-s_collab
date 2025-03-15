@@ -38,7 +38,7 @@ struct Node
 // https://internalpointers.com/post/writing-custom-iterators-modern-cpp 
 
 template <typename DataType>
-class listIterator : public std::iterator<std::forward_iterator_tag, DataType>
+class listIterator //: public std::iterator<std::forward_iterator_tag, DataType>
 {
 public:
 	using iterator_category = std::forward_iterator_tag;
@@ -220,7 +220,7 @@ public:
 	~List()
 	{
 		Node<DataType>* current = head;
-		map<Node<DataType>*, bool> visited; // для цикла
+		map<Node<DataType>*, bool> visited; // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 		while (current != nullptr)
 		{
@@ -739,15 +739,7 @@ public:
 
 	}
 
-	void Print()
-	{
-		Node<DataType>* p = head;
-		while (p->next != nullptr) { //пока список не кончится
-			cout << p->data << " ";
-			p = p->next;
-		}
-		cout << p->data; //печать послед.
-	}
+
 
 	Node<DataType>* GetFirst()
 	{
@@ -764,26 +756,26 @@ public:
 			return;
 		}
 
-		// Вставка в начало (перед head)
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ head)
 		if (prev == nullptr) {
 			p->next = head;
 			head = p;
 			return;
 		}
 
-		// Вставка в конец (если curr == nullptr и prev->next == nullptr)
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ curr == nullptr пїЅ prev->next == nullptr)
 		if (curr == nullptr) {
 			if (prev->next == nullptr) {
 				prev->next = p;
 			}
 			else {
-				delete p; // Освобождаем память, если вставка невозможна
+				delete p; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				throw std::invalid_argument("Invalid prev node for insertion at the end");
 			}
 			return;
 		}
 
-		// Вставка между prev и curr
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ prev пїЅ curr
 		prev->next = p;
 		p->next = curr;
 	}

@@ -21,15 +21,15 @@ arithmetic::arithmetic(string &tmp) noexcept : inputstring(tmp)
         pair<string, int>{"*", 2}, pair<string, int>{"/", 2},
         pair<string, int>{"(", 0}};
 }
-/* arithmetic::arithmetic()
+ arithmetic::arithmetic()
     {
         priority = {
         pair<string, int>{"+", 1}, pair<string, int>{"-", 1},
         pair<string, int>{"*", 2}, pair<string, int>{"/", 2},
         pair<string, int>{"(", 0}};
     }
-*/
-/* void arithmetic::new_polinom_for_calculate(string &tmp) noexcept :
+
+ void arithmetic::new_polinom_for_calculate(string &tmp) noexcept 
     {
         inputstring.clear();
         input.clear();
@@ -41,7 +41,7 @@ arithmetic::arithmetic(string &tmp) noexcept : inputstring(tmp)
 
 
 
-*/
+
 
 void arithmetic::parser()
 {
@@ -54,7 +54,7 @@ void arithmetic::parser()
         {
             string k(1, inputstring[i]);
             lexema tmp(1, k);
-            variables[k] = 0.0;
+            variables[k];
             input.push_back(tmp);
         }
         if (strchr("+-*/", inputstring[i]) != nullptr)
@@ -181,9 +181,9 @@ void arithmetic::to_postfix() noexcept
     postfix_string.pop_back();
 }
 
-double arithmetic::calculate() noexcept ////    double -> polinom and lower!!! in this method
+Polynom arithmetic::calculate() noexcept ////    double -> polinom and lower!!! in this method
 {
-    super_stack<double> st;
+    super_stack<Polynom> st;
     for (int i = 0; i < postfix.size(); i++)
     {
         if (postfix[i].type == 1)
@@ -197,9 +197,8 @@ double arithmetic::calculate() noexcept ////    double -> polinom and lower!!! i
                     postfix[i].str[j] = '.';
             }
             stringstream s(postfix[i].str); /// here SYETA
-            double k;                       /// делать из числа полином!!!!!!
-            s >> k;
-            st.push(k);
+            Polynom zxc(postfix[i].str + "x0y0z0");          /// делать из числа полином!!!!!!
+            st.push(zxc);
         }
 
         if (postfix[i].type == 3)
@@ -209,31 +208,32 @@ double arithmetic::calculate() noexcept ////    double -> polinom and lower!!! i
             {
             case '+':
             {
-                double right = st.pop(), left = st.pop();
+                Polynom right = st.pop(), left = st.pop();
                 st.push(left + right);
                 break;
             }
 
             case '-':
             {
-                double right = st.pop(), left = st.pop();
+                Polynom right = st.pop(), left = st.pop();
                 st.push(left - right);
                 break;
             }
 
             case '*':
             {
-                double right = st.pop(), left = st.pop();
+                Polynom right = st.pop(), left = st.pop();
                 st.push(left * right);
                 break;
             }
-
+            /*
             case '/':
             {
                 double right = st.pop(), left = st.pop();
                 st.push(static_cast<double>(left / right));
                 break;
             }
+            */
             default:
             {
                 cout << " it's fiasko" << endl;
@@ -243,19 +243,19 @@ double arithmetic::calculate() noexcept ////    double -> polinom and lower!!! i
         }
     }
 
-    return static_cast<double>(st.pop());
+    return (st.pop());
 }
-
+//////////////////////////////////////////////////////////////////
 void arithmetic::getvalue()
 {
     for (auto &[first, second] : variables)
-    {
-        cout << "Input value of " << first << ": "; /// из таблицы брать
-        cin >> second;                              // polinom NOT STR!        ////////////////////////////////////////////////////////
+    {/// указатель на таблицу 
+    //через find на ключи mapa
+        //девочки, сюда надо вкид из таблицы
     }
 }
 
-double arithmetic::try_calculate() //////////     double -> polinom
+Polynom arithmetic::try_calculate() //////////     double -> polinom
 {
     this->parser();
     this->check();
@@ -292,7 +292,7 @@ bool for_check::check_check(arithmetic &zxc)
     zxc.parser();
     return zxc.check();
 }
-bool for_check::check_calculate(arithmetic &zxc, const double &res) // double -> polinom
+bool for_check::check_calculate(arithmetic &zxc, const Polynom &res) // double -> polinom
 {
     zxc.parser();
     zxc.check();
