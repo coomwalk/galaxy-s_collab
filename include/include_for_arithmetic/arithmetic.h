@@ -32,7 +32,7 @@ private:
     vector<lexema> input;
     vector<lexema> postfix;
     string postfix_string = "";
-    map<string, Polynom> variables; //////double -> polinom
+    map<string, Polynom> variables; 
     map<string, int> priority;
     bool check() const;
     void parser();
@@ -43,8 +43,8 @@ private:
 public:
     arithmetic(string &tmp) noexcept;
     arithmetic() noexcept;
-    void new_polinom_for_calculate(string &tmp); // clear hear
-    Polynom try_calculate(); /// double -> polinom
+    void new_task_for_calculate(string &tmp) noexcept; // clear hear
+    Polynom try_calculate(); 
     ~arithmetic() = default;
 
     string input_string_out() const noexcept;
@@ -56,7 +56,7 @@ class for_check
 public:
     bool check_parser(arithmetic &zxc, const vector<lexema> res);
     bool check_check(arithmetic &zxc);
-    bool check_calculate(arithmetic &zxc, const Polynom &res);
+    //bool check_calculate(arithmetic &zxc, Polynom &res);
     bool check_postfix(arithmetic &zxc, const string &res);
 };
 

@@ -1,6 +1,7 @@
 #include "arithmetic.h"
-#include <sstream>
-/* here!!!!!!!!!!!!!!!!
+#include "polinom.h"
+#include <sstream> //пишим таболицу на векторах тетсим там обваравичваем всее в общий класс таблиц оттуда тестим(выносим аrithmetic) балдеем(тип ключ добавить для каждой таблицы???) ну и хорош можешь идти писать деревья
+
 lexema::lexema(int first, string second) : type(first), str(second)
 {
 }
@@ -21,7 +22,7 @@ arithmetic::arithmetic(string &tmp) noexcept : inputstring(tmp)
         pair<string, int>{"*", 2}, pair<string, int>{"/", 2},
         pair<string, int>{"(", 0}};
 }
- arithmetic::arithmetic()
+ arithmetic::arithmetic() noexcept
     {
         priority = {
         pair<string, int>{"+", 1}, pair<string, int>{"-", 1},
@@ -29,7 +30,7 @@ arithmetic::arithmetic(string &tmp) noexcept : inputstring(tmp)
         pair<string, int>{"(", 0}};
     }
 
- void arithmetic::new_polinom_for_calculate(string &tmp) noexcept 
+ void arithmetic::new_task_for_calculate(string &tmp) noexcept 
     {
         inputstring.clear();
         input.clear();
@@ -56,9 +57,9 @@ void arithmetic::parser()
             lexema tmp(1, k);
             variables[k];
             input.push_back(tmp);
-        }*/ // here!!!!!!!!!!!!!!!!!!
-        //if (strchr("+-*/", inputstring[i]) != nullptr)
-        /*{
+        }
+        if (strchr("+-*/", inputstring[i]) != nullptr)
+        {
             string k(1, inputstring[i]);
             lexema tmp(3, k);
             input.push_back(tmp);
@@ -181,13 +182,13 @@ void arithmetic::to_postfix() noexcept
     postfix_string.pop_back();
 }
 
-Polynom arithmetic::calculate() noexcept ////    double -> polinom and lower!!! in this method
+Polynom arithmetic::calculate() noexcept 
 {
     super_stack<Polynom> st;
     for (int i = 0; i < postfix.size(); i++)
     {
         if (postfix[i].type == 1)
-            st.push(variables[postfix[i].str]);
+            st.push(variables[postfix[i].str]); /// here get value polinom from map
 
         if (postfix[i].type == 2)
         {
@@ -196,8 +197,9 @@ Polynom arithmetic::calculate() noexcept ////    double -> polinom and lower!!! 
                 if (postfix[i].str[j] == ',')
                     postfix[i].str[j] = '.';
             }
-            stringstream s(postfix[i].str); /// here SYETA
-            Polynom zxc(postfix[i].str + "x0y0z0");          /// делать из числа полином!!!!!!
+            //stringstream s(postfix[i].str);
+            string q = postfix[i].str + "x0y0z0";
+            Polynom zxc(q);
             st.push(zxc);
         }
 
@@ -245,17 +247,27 @@ Polynom arithmetic::calculate() noexcept ////    double -> polinom and lower!!! 
 
     return (st.pop());
 }
-//////////////////////////////////////////////////////////////////
-void arithmetic::getvalue()
+
+void arithmetic::getvalue() // MEGA THINKING WHAT HERE DO
 {
     for (auto &[first, second] : variables)
-    {/// указатель на таблицу 
+    {
+        string zxc;
+        cout << "Input value of " << first << ": ";
+        cin >> zxc;
+        if(zxc == "0x0y0z0") throw "0x0y0z0 -> map";
+        else
+        {
+        second = Polynom(zxc);
+        }
+        /// указатель на таблицу 
     //через find на ключи mapa
         //девочки, сюда надо вкид из таблицы
     }
+    
 }
 
-Polynom arithmetic::try_calculate() //////////     double -> polinom
+Polynom arithmetic::try_calculate()
 {
     this->parser();
     this->check();
@@ -292,13 +304,13 @@ bool for_check::check_check(arithmetic &zxc)
     zxc.parser();
     return zxc.check();
 }
-bool for_check::check_calculate(arithmetic &zxc, const Polynom &res) // double -> polinom
+/*bool for_check::check_calculate(arithmetic &zxc,  Polynom &res)
 {
     zxc.parser();
     zxc.check();
     zxc.to_postfix();
     return zxc.calculate() == res;
-}
+}*/
 bool for_check::check_postfix(arithmetic &zxc, const string &res)
 {
     zxc.parser();
@@ -306,4 +318,3 @@ bool for_check::check_postfix(arithmetic &zxc, const string &res)
     zxc.to_postfix();
     return (zxc.postfix_string == res);
 }
-*/

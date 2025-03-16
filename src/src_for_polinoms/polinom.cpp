@@ -6,11 +6,6 @@
 #include "monom.h"
 #include "list.h"
 
-Polynom::Polynom()
-{
-    //polinoms.InsertToTail(Monom());
-}
-
 Polynom::Polynom(const string& s) //-3.1x10y10z10 + 20.2x-10y-10z-10
 {
     std::string copy_s = s;
@@ -38,8 +33,12 @@ Polynom::Polynom(const string& s) //-3.1x10y10z10 + 20.2x-10y-10z-10
         tmp.clear();
     }
 }
+Polynom::Polynom(Polynom&& p) noexcept
+{
+    polinoms = std::move(p.polinoms);  
+}
 
-Polynom::Polynom(Polynom& p)
+Polynom::Polynom(const Polynom& p)
 {
     polinoms.Clean();
     listIterator<Monom> start = p.polinoms.GetFirst();
@@ -70,13 +69,18 @@ Polynom& Polynom::operator=( const Polynom& p)
 
     return *this;
 }
+Polynom& Polynom::operator=(Polynom&& p) noexcept
+{
+    polinoms = std::move(p.polinoms);
+    return *this;
+}
 
 Polynom Polynom::operator*(Monom& m)
 {
     Polynom res;
-    listIterator<Monom> start = polinoms.GetFirst();
+    listIterator<Monom> start;// = polinoms.GetFirst();
 
-    for (start; start != polinoms.end(); ++start)
+    for (start = polinoms.GetFirst(); start != polinoms.end(); ++start)
     {
         Monom tmp = *start * m;
         res.polinoms.InsertToTail(tmp);
@@ -88,9 +92,9 @@ Polynom Polynom::operator*(Monom& m)
 Polynom Polynom::operator*(double& oth)
 {
     Polynom res;
-    listIterator<Monom> start = polinoms.GetFirst();
+    listIterator<Monom> start;// = polinoms.GetFirst();
 
-    for (start; start != polinoms.end(); ++start)
+    for (start = polinoms.GetFirst(); start != polinoms.end(); ++start)
     {
         Monom tmp = *start * oth;
         res.polinoms.InsertToTail(tmp);
@@ -150,10 +154,10 @@ Polynom Polynom::operator*(Polynom& p)
 {
     Polynom res;
 
-    listIterator<Monom> it1 = polinoms.GetFirst();
+    listIterator<Monom> it1;// = polinoms.GetFirst();
     
 
-    for (it1; it1 != polinoms.end(); ++it1)
+    for (it1 = polinoms.GetFirst(); it1 != polinoms.end(); ++it1)
     {
         for (listIterator<Monom> it2 = p.polinoms.GetFirst(); it2 != p.polinoms.end(); ++it2)
         {
@@ -194,10 +198,10 @@ Polynom Polynom::operator*(Polynom& p)
 
 ostream& operator<<(ostream& ostr, const Polynom& p)
 {
-    listIterator<Monom> start = p.polinoms.GetFirst();
+    listIterator<Monom> start;// = p.polinoms.GetFirst();
     listIterator<Monom> end = p.polinoms.end();
 
-    for (start; start != end; ++start)
+    for (start = p.polinoms.GetFirst(); start != end; ++start)
     {
         ostr << *start;
         if (std::next(start) != end)

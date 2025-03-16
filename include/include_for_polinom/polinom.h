@@ -12,10 +12,11 @@ class Polynom
 {
     List<Monom> polinoms;
 public:
-    Polynom();
+    Polynom() = default;
     Polynom(const string& s);
-    Polynom(Polynom& p);
-    
+    Polynom(const Polynom& p);
+    Polynom(Polynom&& p) noexcept;
+    Polynom& operator=(Polynom&& p) noexcept;
     Polynom& operator=(const Polynom& other);
     Polynom operator*(Monom& m);
     Polynom operator*(double& oth);
@@ -23,8 +24,9 @@ public:
     Polynom operator-(Polynom& other);
 
     Polynom operator*(Polynom& other);
-
+    // operatot == 
     void DelCoeffZero();
+    ~Polynom() = default;
     
     friend ostream& operator<<(ostream& ostr, const Polynom& poli);
     friend istream& operator>>(istream& istr, Polynom& poli);
