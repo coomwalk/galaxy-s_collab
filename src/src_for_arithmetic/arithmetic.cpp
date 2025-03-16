@@ -30,7 +30,7 @@ arithmetic::arithmetic(string &tmp) noexcept : inputstring(tmp)
         pair<string, int>{"(", 0}};
     }
 
- void arithmetic::new_task_for_calculate(string &tmp) noexcept 
+ void arithmetic::new_task_for_calculate(string &tmp, table_mama_and_papa<std::string,Polynom>* p) noexcept 
     {
         inputstring.clear();
         input.clear();
@@ -38,6 +38,7 @@ arithmetic::arithmetic(string &tmp) noexcept : inputstring(tmp)
         postfix_string.clear();
         variables.clear();
         inputstring = tmp;
+        point_table = p;
     }
 
 
@@ -251,18 +252,8 @@ Polynom arithmetic::calculate() noexcept
 void arithmetic::getvalue() // MEGA THINKING WHAT HERE DO
 {
     for (auto &[first, second] : variables)
-    {
-        string zxc;
-        cout << "Input value of " << first << ": ";
-        cin >> zxc;
-        if(zxc == "0x0y0z0") throw "0x0y0z0 -> map";
-        else
-        {
-        second = Polynom(zxc);
-        }
-        /// указатель на таблицу 
-    //через find на ключи mapa
-        //девочки, сюда надо вкид из таблицы
+    {   
+        second = point_table->find(first);
     }
     
 }
@@ -293,7 +284,7 @@ string arithmetic::postfix_string_out() noexcept
 ///////////////////
 ///////////////////
 
-bool for_check ::check_parser(arithmetic &zxc, const vector<lexema> res)
+/*bool for_check ::check_parser(arithmetic &zxc, const vector<lexema> res)
 {
     zxc.parser();
     return zxc.input == res;
@@ -304,13 +295,13 @@ bool for_check::check_check(arithmetic &zxc)
     zxc.parser();
     return zxc.check();
 }
-/*bool for_check::check_calculate(arithmetic &zxc,  Polynom &res)
+bool for_check::check_calculate(arithmetic &zxc,  Polynom &res)
 {
     zxc.parser();
     zxc.check();
     zxc.to_postfix();
     return zxc.calculate() == res;
-}*/
+}
 bool for_check::check_postfix(arithmetic &zxc, const string &res)
 {
     zxc.parser();
@@ -318,3 +309,4 @@ bool for_check::check_postfix(arithmetic &zxc, const string &res)
     zxc.to_postfix();
     return (zxc.postfix_string == res);
 }
+*/

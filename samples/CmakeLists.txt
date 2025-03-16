@@ -2,7 +2,8 @@ set(target_sample1 "sample_for_arithmetic_and_polinom")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include/include_for_arithmetic")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include/include_for_polinom")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include/include_for_tables")
 
-add_executable( "${target_sample1}" "main_polinom.cpp")
+add_executable( "${target_sample1}" "main.cpp")
 
 target_link_libraries("${target_sample1}" "lib_for_arithmetic" "lib_for_polinoms_and_monom")

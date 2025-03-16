@@ -9,6 +9,7 @@
 #include <cctype>
 #include "super_stack.h"
 #include "../include_for_polinom/polinom.h"
+#include "../include_for_tables/all_table_header.h"
 
 using namespace std;
 
@@ -28,6 +29,9 @@ class arithmetic
     friend class for_check;
 
 private:
+
+    table_mama_and_papa<std::string,Polynom>* point_table = nullptr;
+    /// change if type key will dif
     string inputstring;
     vector<lexema> input;
     vector<lexema> postfix;
@@ -43,7 +47,7 @@ private:
 public:
     arithmetic(string &tmp) noexcept;
     arithmetic() noexcept;
-    void new_task_for_calculate(string &tmp) noexcept; // clear hear
+    void new_task_for_calculate(string &tmp, table_mama_and_papa<std::string,Polynom>* p) noexcept; // clear hear
     Polynom try_calculate(); 
     ~arithmetic() = default;
 
@@ -51,7 +55,7 @@ public:
     string postfix_string_out() noexcept;
 };
 
-class for_check
+/*class for_check
 {
 public:
     bool check_parser(arithmetic &zxc, const vector<lexema> res);
@@ -59,5 +63,5 @@ public:
     //bool check_calculate(arithmetic &zxc, Polynom &res);
     bool check_postfix(arithmetic &zxc, const string &res);
 };
-
+*/
 #endif
